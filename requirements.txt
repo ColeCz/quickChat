@@ -1,0 +1,3 @@
+fastapi[standard]
+psycopg[binary] # consider psycopg[async]
+python-dotenv
