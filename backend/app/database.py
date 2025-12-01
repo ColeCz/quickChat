@@ -1,14 +1,13 @@
 import psycopg
+import os
+from psycopg_pool import ConnectionPool
+from dotenv import load_dotenv
 
-#NOTE: use async pool
 
-def get_db_connection():
-    # Using psycopg 3
-    conn = psycopg.connect(
-        host="localhost",
-        dbname="messaging",
-        user="your_user",
-        password="your_password",
-        autocommit=True  # optional, depends if you want autocommit
-    )
-    return conn
+load_dotenv()
+conninfo = "postgresql://" + os.getenv("DB_USER") + ":" + os.getenv("DB_PASSWORD") + "@" + os.getenv("DB_HOST") + ":" + os.getenv("DB_PORT") + "/" + os.getenv("DB_NAME")
+
+pool = ConnectionPool(
+    conninfo,
+    max_size=5,
+)
