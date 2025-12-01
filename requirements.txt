@@ -1,3 +1,4 @@
 fastapi[standard]
 psycopg[binary] # consider psycopg[async]
+pip install psycopg_pool
 python-dotenv
