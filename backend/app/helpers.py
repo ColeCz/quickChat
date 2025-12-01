@@ -1,4 +1,6 @@
-def get_query(query_file: str) -> str:
-    full_query_path = "../queries/" + query_file
-    return full_query_path
+def get_query(filename: str) -> str:
+    path = "./queries/" + filename
+    with open(path, "r") as file:
+        sql = file.read()
 
+    return sql
