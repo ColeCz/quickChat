@@ -1,15 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from app.helpers import get_query
-from app.database import get_db_connection
+from app.database import pool
 
-@app.get("/login")
+
+router = APIRouter()
+
+@router.get("/login")
 def login():
-    connection = get_db_connection()
-    connection.cursor().execute()
-
-
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+    pass
