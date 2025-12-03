@@ -1,4 +1,4 @@
 SELECT username
-FROM user
+FROM users
 WHERE username = %(username)s
 AND passwrd = %(passwrd)s;
