@@ -1,0 +1,2 @@
+# defines session dict
+sessions = {}
