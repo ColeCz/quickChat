@@ -3,6 +3,16 @@ CREATE TABLE IF NOT EXISTS users (
     passwrd VARCHAR(64) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS friends (
+    sender_username VARCHAR(64),
+    receiver_username VARCHAR(64),
+    friendship_status VARCHAR(10) NOT NULL DEFAULT 'pending', -- pending, accepted, rejected, blocked
+    friends_since TIMESTAMP NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (sender_username) REFERENCES users (username),
+    FOREIGN KEY (receiver_username) REFERENCES users (username),
+    PRIMARY KEY (sender_username, receiver_username)
+);
+
 CREATE TABLE IF NOT EXISTS conversation (
     convo_id SERIAL PRIMARY KEY
 );

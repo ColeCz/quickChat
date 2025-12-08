@@ -15,3 +15,8 @@ def is_logged_in(request: Request) -> bool:
     username = sessions.get(session_token)
     return username != None
     
+
+def get_username(request: Request) -> str:
+    session_token = request.cookies.get("username_session_token")
+    username = sessions.get(session_token)
+    return username
