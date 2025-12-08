@@ -1,13 +1,13 @@
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(64) PRIMARY KEY,
     passwrd VARCHAR(64) NOT NULL
 );
 
-CREATE TABLE conversation (
+CREATE TABLE IF NOT EXISTS conversation (
     convo_id SERIAL PRIMARY KEY
 );
 
-CREATE TABLE conversation_recipients (
+CREATE TABLE IF NOT EXISTS conversation_recipients (
     username VARCHAR(64),
     convo_id INT,
     FOREIGN KEY (username) REFERENCES users(username),
@@ -15,7 +15,7 @@ CREATE TABLE conversation_recipients (
     PRIMARY KEY (username, convo_id)
 );
 
-CREATE TABLE message (
+CREATE TABLE IF NOT EXISTS message (
     message_id SERIAL PRIMARY KEY,
     message_data TEXT NOT NULL,
     message_timestamp TIMESTAMP DEFAULT NOW(),
