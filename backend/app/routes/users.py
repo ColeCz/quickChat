@@ -4,6 +4,10 @@ from app.database import pool
 from app.sessions import sessions
 import secrets
 
+# TODO: logout before logging in
+# TODO: Remove cookie/session logic from login and add to helper function
+# TODO: use the login helper function to automatically sign users in upon registration
+
 
 router = APIRouter()
 
@@ -32,8 +36,7 @@ def verify_user_exists(username: str) -> bool:
 
     
 
-# TODO: Remove cookie/session logic and add it to helper function
-@router.get("/login")
+@router.post("/login")
 def login(response: Response, username: str = None, password: str = None):
     if username == None:
         return {"error:": "missing username"}
@@ -77,15 +80,15 @@ def login(response: Response, username: str = None, password: str = None):
 
 
 
-@router.get("/logout")
+@router.post("/logout")
 def logout(response: Response, username_session_token: str = Cookie(None)):
     removed_session_val = sessions.pop(username_session_token, None)
     response.delete_cookie("username_session_token")
     return {"Success - removed the session value:": removed_session_val}
     
 
-# TODO: use the upcoming login helper function to automatically sign users in upon registration
-@router.get("/register")
+
+@router.post("/register")
 def register(username: str = None, password: str = None):
     if username == None:
         return {"error:": "missing username"}
@@ -106,34 +109,3 @@ def register(username: str = None, password: str = None):
         return {"error:": str(e)}
 
     return {"success": "account created"}
-
-
-
-@router.get("/send-friend-request")
-def send_friend_request(request: Request, receiver_username: str = None):
-
-    if not is_logged_in(request):
-        return {"error:": "Must be logged in to perform this operation"}
-
-    if receiver_username == None:
-        return {"error:": "No username given"}
-
-    if not verify_user_exists(receiver_username):
-        return {"error:": "The user you are sending a friend request to does not exist"}
-
-    sender_username = get_username(request)
-    sql = get_query("send-friend-request.sql")
-    parameters = {
-        "sender_username": sender_username,
-        "receiver_username": receiver_username
-    }
-
-    try:
-        with pool.connection() as connection:
-            with connection.cursor() as cursor:
-                cursor.execute(sql, parameters)
-                return {"success:": "friend request sent"}
-    except Exception as e:
-        return {"error:": str(e)}
-
-
